@@ -11,6 +11,8 @@ import type {Node} from 'react';
 import {
     Alert,
     Button,
+    Dimensions,
+    Image,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -19,7 +21,7 @@ import {
     useColorScheme,
     View,
 } from 'react-native';
-// import RNPickerSelect from 'react-native-picker-select';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown'
 import Slider from '@react-native-community/slider';
 import io from 'socket.io-client';
@@ -130,19 +132,28 @@ const App: () => Node = () => {
                 />
             </View>
 
-            <View>
+            <View style={{alignItems: 'center'}}>
                 <SelectDropdown
                     data={aApp}
-                    onSelect={(sSelectedApp, nIndex) => {
+                    onSelect={(sSelectedApp) => {
                         sActualApp = sSelectedApp;
                     }}
-                    buttonTextAfterSelection={(sSelectedApp, nIndex) => {
+                    defaultButtonText={'Sélectionner...'}
+                    buttonTextAfterSelection={(sSelectedApp) => {
                         return sSelectedApp
                     }}
-                    rowTextForSelection={(sSelectedApp, nIndex) => {
+                    rowTextForSelection={(sSelectedApp) => {
                         return sSelectedApp
                     }}
-                    style={styles.rtlSwitchContainer}
+                    buttonStyle={styles.dropdown1BtnStyle}
+                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                    // renderDropdownIcon={isOpened => {
+                    //     return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    // }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown1DropdownStyle}
+                    rowStyle={styles.dropdown1RowStyle}
+                    rowTextStyle={styles.dropdown1RowTxtStyle}
                 />
             </View>
 
@@ -169,11 +180,33 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
-    rtlSwitchContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 40,
-        paddingTop: 20,
+
+    dropdown1BtnStyle: {
+        width: '80%',
+        height: 50,
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#444',
+    },
+
+    dropdown1BtnTxtStyle: {
+        color: '#222',
+        textAlign: 'left'
+    },
+
+    dropdown1DropdownStyle: {
+        backgroundColor: '#fff'
+    },
+    
+    dropdown1RowStyle: {
+        backgroundColor: '#fff',
+        borderBottomColor: '#222'
+    },
+
+    dropdown1RowTxtStyle: {
+        color: '#222',
+        textAlign: 'center'
     },
 });
 
