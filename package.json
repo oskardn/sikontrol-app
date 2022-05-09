@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@react-native-community/slider": "^4.2.2",
-    "@react-native-picker/picker": "^2.4.1",
+    "add": "^2.0.6",
     "react": "17.0.2",
-    "react-native": "0.68.2"
+    "react-native": "0.68.2",
+    "react-native-select-dropdown": "^1.13.0",
+    "socket.io-client": "^4.5.0",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

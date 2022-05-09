@@ -9,6 +9,8 @@
 import React from 'react';
 import type {Node} from 'react';
 import {
+    Alert,
+    Button,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -17,6 +19,10 @@ import {
     useColorScheme,
     View,
 } from 'react-native';
+// import RNPickerSelect from 'react-native-picker-select';
+import SelectDropdown from 'react-native-select-dropdown'
+import Slider from '@react-native-community/slider';
+import io from 'socket.io-client';
 
 import {
     Colors,
@@ -58,54 +64,116 @@ const App: () => Node = () => {
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
+    const sTokenJSON = "1234";
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-            style={{
-                backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
-            <Section title="Step One">
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-            </Section>
-            <Section title="See Your Changes">
-                <ReloadInstructions />
-            </Section>
-            <Section title="Debug">
-                <DebugInstructions />
-            </Section>
-            <Section title="Learn More">
-                Read the docs to discover what to do next:
-            </Section>
-            <LearnMoreLinks />
+    const nIp = "192.168.230.156", nPort = 3000;
+    const sUrl = `ws://${nIp}:${nPort}`;
+
+    const ioSocket = io.connect(sUrl, {
+        auth: {
+            token: sTokenJSON,
+        },
+        withCredentials: true,
+        transports: ['websocket'],
+        reconnectionAttempts: 15
+    });
+
+    let aApp = [], sActualApp;
+
+    ioSocket.on('aSessions', (aSessions) => {
+        aSessions.forEach((sValue) => {
+            if (sValue.name  && sValue.pid) {
+                aApp.push(sValue.name);
+            };
+        });
+    });
+
+    return (
+        <View style={[styles.container, {flexDirection: "column"}]}>
+            <View>
+                <Button
+                    title="Précédent"
+                    onPress={() => ioSocket.emit("ioActions", {
+                        action: "vPrevious"
+                    })}
+                />
+            </View>
+            <View>
+                <Button
+                    title="Play et Pause"
+                    onPress={() => ioSocket.emit("ioActions", {
+                        action: "vPlayPause"
+                    })}
+                />
+            </View>
+            <View>
+                <Button
+                    title="Suivant"
+                    onPress={() => ioSocket.emit("ioActions", {
+                        action: "vNext"
+                    })}
+                />
+            </View>
+
+            <View>
+                <Slider
+                    minimumValue={0}
+                    maximumValue={1}
+                    step={0.01}
+                    value={1}
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#000000"
+                    onValueChange={(value) => ioSocket.emit('ioVolumeMaster', {
+                        action: 'vMaster',
+                        volume: value * 100
+                    })}
+                />
+            </View>
+
+            <View>
+                <SelectDropdown
+                    data={aApp}
+                    onSelect={(sSelectedApp, nIndex) => {
+                        sActualApp = sSelectedApp;
+                    }}
+                    buttonTextAfterSelection={(sSelectedApp, nIndex) => {
+                        return sSelectedApp
+                    }}
+                    rowTextForSelection={(sSelectedApp, nIndex) => {
+                        return sSelectedApp
+                    }}
+                    style={styles.rtlSwitchContainer}
+                />
+            </View>
+
+            <View>
+                <Slider
+                    minimumValue={0}
+                    maximumValue={1}
+                    step={0.01}
+                    value={1}
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#000000"
+                    onValueChange={(value) => ioSocket.emit('ioVolumeApps', {
+                        action: sActualApp,
+                        volume: value * 100
+                    })}
+                />
+            </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      );
 };
 
 const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
+    container: {
+        flex: 1,
+        padding: 20,
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-    },
-    highlight: {
-        fontWeight: '700',
+    rtlSwitchContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 40,
+        paddingTop: 20,
     },
 });
 
