@@ -34,6 +34,12 @@ import {
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+const {width} = Dimensions.get('window');
+
+const Separator = () => (
+    <View style={styles.separator} />
+);
+
 const Section = ({children, title}): Node => {
     const isDarkMode = useColorScheme() === 'dark';
     return (
@@ -68,7 +74,7 @@ const App: () => Node = () => {
     };
     const sTokenJSON = "1234";
 
-    const nIp = "192.168.230.156", nPort = 3000;
+    const nIp = "192.168.0.16", nPort = 3000;
     const sUrl = `ws://${nIp}:${nPort}`;
 
     const ioSocket = io.connect(sUrl, {
@@ -82,7 +88,7 @@ const App: () => Node = () => {
 
     let aApp = [], sActualApp;
 
-    ioSocket.on('aSessions', (aSessions) => {
+    ioSocket.once('aSessions', (aSessions) => {
         aSessions.forEach((sValue) => {
             if (sValue.name  && sValue.pid) {
                 aApp.push(sValue.name);
@@ -92,32 +98,35 @@ const App: () => Node = () => {
 
     return (
         <View style={[styles.container, {flexDirection: "column"}]}>
-            <View>
+            <View style={{flexDirection: 'column', flex: 0.075}}>
                 <Button
                     title="Précédent"
+                    color={"#2e6abb"}
                     onPress={() => ioSocket.emit("ioActions", {
                         action: "vPrevious"
                     })}
                 />
             </View>
-            <View>
+            <View style={{flexDirection: 'column', flex: 0.075}}>
                 <Button
-                    title="Play et Pause"
+                    title="Play / Pause"
+                    color={"#2e6abb"}
                     onPress={() => ioSocket.emit("ioActions", {
                         action: "vPlayPause"
                     })}
                 />
             </View>
-            <View>
+            <View style={{flexDirection: 'column', flex: 0.075}}>
                 <Button
                     title="Suivant"
+                    color={"#2e6abb"}
                     onPress={() => ioSocket.emit("ioActions", {
                         action: "vNext"
                     })}
                 />
             </View>
 
-            <View>
+            <View style={{flexDirection: 'column', flex: 0.075}}>
                 <Slider
                     minimumValue={0}
                     maximumValue={1}
@@ -145,19 +154,19 @@ const App: () => Node = () => {
                     rowTextForSelection={(sSelectedApp) => {
                         return sSelectedApp
                     }}
-                    buttonStyle={styles.dropdown1BtnStyle}
-                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                    // renderDropdownIcon={isOpened => {
-                    //     return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    // }}
+                    buttonStyle={styles.dropdownBtnStyle}
+                    buttonTextStyle={styles.dropdownBtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    }}
                     dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown1DropdownStyle}
-                    rowStyle={styles.dropdown1RowStyle}
-                    rowTextStyle={styles.dropdown1RowTxtStyle}
+                    dropdownStyle={styles.dropdownDropdownStyle}
+                    rowStyle={styles.dropdownRowStyle}
+                    rowTextStyle={styles.dropdownRowTxtStyle}
                 />
             </View>
 
-            <View>
+            <View style={{flexDirection: 'column', flex: 1}}>
                 <Slider
                     minimumValue={0}
                     maximumValue={1}
@@ -167,7 +176,7 @@ const App: () => Node = () => {
                     maximumTrackTintColor="#000000"
                     onValueChange={(value) => ioSocket.emit('ioVolumeApps', {
                         action: sActualApp,
-                        volume: value * 100
+                        volume: Number(value)
                     })}
                 />
             </View>
@@ -181,7 +190,17 @@ const styles = StyleSheet.create({
         padding: 20,
     },
 
-    dropdown1BtnStyle: {
+    separator: {
+        marginVertical: 8,
+        borderBottomColor: '#737373',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+
+    textButtonColor: {
+        color: "#222222"
+    },
+
+    dropdownBtnStyle: {
         width: '80%',
         height: 50,
         backgroundColor: '#FFF',
@@ -190,21 +209,21 @@ const styles = StyleSheet.create({
         borderColor: '#444',
     },
 
-    dropdown1BtnTxtStyle: {
+    dropdownBtnTxtStyle: {
         color: '#222',
         textAlign: 'left'
     },
 
-    dropdown1DropdownStyle: {
+    dropdownDropdownStyle: {
         backgroundColor: '#fff'
     },
     
-    dropdown1RowStyle: {
+    dropdownRowStyle: {
         backgroundColor: '#fff',
         borderBottomColor: '#222'
     },
 
-    dropdown1RowTxtStyle: {
+    dropdownRowTxtStyle: {
         color: '#222',
         textAlign: 'center'
     },
