@@ -39,58 +39,79 @@ const Sikontrol = ({ route, navigation }) => {
 
 	return (
 		<View style={[oStyles.container, { flexDirection: "column" }]}>
-			<View style={{ flexDirection: "column", flex: 0.075 }}>
-				<Button
-					title="Précédent"
-					color={"#2e6abb"}
-					onPress={() =>
-						ioSocket.emit("ioActions", {
-							action: "vPrevious",
-						})
-					}
-				/>
-			</View>
-			<View style={{ flexDirection: "column", flex: 0.075 }}>
-				<Button
-					title="Play / Pause"
-					color={"#2e6abb"}
-					onPress={() =>
-						ioSocket.emit("ioActions", {
-							action: "vPlayPause",
-						})
-					}
-				/>
-			</View>
-			<View style={{ flexDirection: "column", flex: 0.075 }}>
-				<Button
-					title="Suivant"
-					color={"#2e6abb"}
-					onPress={() =>
-						ioSocket.emit("ioActions", {
-							action: "vNext",
-						})
-					}
-				/>
+			<View style={[oStyles.center, { flexDirection: "row" }]}>
+				<View style={{ width: "33%" }}>
+					<Button
+						title="Précédent"
+						color={"#2e6abb"}
+						onPress={() =>
+							ioSocket.emit("ioActions", {
+								action: "vPrevious",
+							})
+						}
+					/>
+				</View>
+
+				<View style={{ width: "33%" }}>
+					<Button
+						title="Play / Pause"
+						color={"#2e6abb"}
+						onPress={() =>
+							ioSocket.emit("ioActions", {
+								action: "vPlayPause",
+							})
+						}
+					/>
+				</View>
+
+				<View style={{ width: "33%" }}>
+					<Button
+						title="Suivant"
+						color={"#2e6abb"}
+						onPress={() =>
+							ioSocket.emit("ioActions", {
+								action: "vNext",
+							})
+						}
+					/>
+				</View>
 			</View>
 
 			<Separator />
 
-			<View style={{ flexDirection: "column", flex: 0.075 }}>
-				<Slider
-					minimumValue={0}
-					maximumValue={1}
-					step={0.01}
-					value={0.5}
-					minimumTrackTintColor="#222"
-					maximumTrackTintColor="#000000"
-					onValueChange={(value) =>
-						ioSocket.emit("ioVolumeMaster", {
-							action: "vMaster",
-							volume: value * 100,
-						})
-					}
-				/>
+			<View style={[oStyles.center, { flexDirection: "row", flex: 0.075 }]}>
+				<View style={{ width: "80%" }}>
+					<Slider
+						minimumValue={0}
+						maximumValue={1}
+						step={0.01}
+						value={1}
+						minimumTrackTintColor="#222"
+						maximumTrackTintColor="#000000"
+						onValueChange={(value) =>
+							ioSocket.emit("ioVolumeMaster", {
+								action: "vMaster",
+								volume: value * 100,
+							})
+						}
+					/>
+				</View>
+
+				<View style={{ width: "20%" }}>
+					<Button
+						title="MUTE"
+						color={"#2e6abb"}
+						onPress={() =>
+							ioSocket.emit("ioMasterMute", {
+								action: "vMuteMaster",
+							})
+						}
+					/>
+				</View>
 			</View>
+
+			<Separator />
+
 			<View style={{ alignItems: "center" }}>
 				<SelectDropdown
 					data={aApp}
@@ -124,31 +145,35 @@ const Sikontrol = ({ route, navigation }) => {
 
 			<Separator />
 
-			<View style={{ flexDirection: "column", flex: 1 }}>
-				<Slider
-					minimumValue={0}
-					maximumValue={1}
-					step={0.01}
-					value={1}
-					minimumTrackTintColor="#222"
-					maximumTrackTintColor="#000000"
-					onValueChange={(value) =>
-						ioSocket.emit("ioVolumeApps", {
-							action: sActualApp,
-							volume: Number(value),
-						})
-					}
-				/>
-			</View>
+			<View style={[oStyles.center, { flexDirection: "row", flex: 0.075 }]}>
+				<View style={{ width: "80%" }}>
+					<Slider
+						minimumValue={0}
+						maximumValue={1}
+						step={0.01}
+						value={1}
+						minimumTrackTintColor="#222"
+						maximumTrackTintColor="#000000"
+						onValueChange={(value) =>
+							ioSocket.emit("ioVolumeApps", {
+								action: sActualApp,
+								volume: Number(value),
+							})
+						}
+					/>
+				</View>
 
-			<View>
-				<Button
-					title="Paramètres"
-					color={"#2e6abb"}
-					onPress={() => {
-						navigation.navigate("Settings");
-					}}
-				/>
+				<View style={{ width: "20%" }}>
+					<Button
+						title="MUTE"
+						color={"#2e6abb"}
+						onPress={() =>
+							ioSocket.emit("ioMuteButton", {
+								vApp: sActualApp,
+							})
+						}
+					/>
+				</View>
 			</View>
 		</View>
 	);
@@ -162,14 +187,14 @@ const oStyles = StyleSheet.create({
 		padding: 20,
 	},
 
+	center: {
+		justifyContent: "space-between",
+	},
+
 	separator: {
 		marginVertical: 8,
 		borderBottomColor: "transparent",
 		borderBottomWidth: StyleSheet.hairlineWidth,
-	},
-
-	textButtonColor: {
-		color: "#222222",
 	},
 
 	dropdownBtnStyle: {

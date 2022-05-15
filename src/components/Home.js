@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from "react";
-import { Button, StatusBar, View } from "react-native";
+import React, { useCallback } from "react";
+import { Button, Image, StyleSheet, Text, View } from "react-native";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
 import AlertSystem from "../function/Alert";
+
+const Separator = () => <View style={oStyles.separator} />;
 
 const Home = ({ navigation }) => {
 	let sTypeErreur, sMessageErreur, sBoutonErreur;
@@ -50,17 +52,41 @@ const Home = ({ navigation }) => {
 	}, []);
 
 	return (
-		<View>
-			<Button title="Connexion" onPress={vConnection} />
+		<View style={{ alignItems: "center" }}>
+			<Separator />
 
-			<Button
-				title="Paramètres"
-				onPress={() => {
-					navigation.navigate("Settings");
-				}}
-			/>
+			<Image source={require("../img/logo.png")} />
+
+			<Separator />
+
+			<Text>Sikontrol</Text>
+
+			<Separator />
+
+			<View style={{ width: "33%" }}>
+				<Button title="Connexion" onPress={vConnection} />
+			</View>
+
+			<Separator />
+
+			<View style={{ width: "33%" }}>
+				<Button
+					title="Paramètres"
+					onPress={() => {
+						navigation.navigate("Settings");
+					}}
+				/>
+			</View>
 		</View>
 	);
 };
 
 export default Home;
+
+const oStyles = StyleSheet.create({
+	separator: {
+		marginVertical: 8,
+		borderBottomColor: "transparent",
+		borderBottomWidth: StyleSheet.hairlineWidth,
+	},
+});

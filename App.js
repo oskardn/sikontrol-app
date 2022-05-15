@@ -17,7 +17,7 @@ const App = () => {
 					name="Home"
 					component={Home}
 					options={{
-						title: "Home",
+						title: "Accueil",
 						headerStyle: {
 							backgroundColor: "#2e6abb",
 						},

@@ -155,36 +155,4 @@ const oStyles = StyleSheet.create({
 		borderBottomColor: "transparent",
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
-
-	textButtonColor: {
-		color: "#222222",
-	},
-
-	dropdownBtnStyle: {
-		width: "80%",
-		height: 50,
-		backgroundColor: "#FFF",
-		borderRadius: 8,
-		borderWidth: 1,
-		borderColor: "#444",
-	},
-
-	dropdownBtnTxtStyle: {
-		color: "#222",
-		textAlign: "left",
-	},
-
-	dropdownDropdownStyle: {
-		backgroundColor: "#fff",
-	},
-
-	dropdownRowStyle: {
-		backgroundColor: "#fff",
-		borderBottomColor: "#222",
-	},
-
-	dropdownRowTxtStyle: {
-		color: "#222",
-		textAlign: "center",
-	},
 });
