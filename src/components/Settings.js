@@ -1,7 +1,7 @@
-import React from "react";
-import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
-import SyncStorage from "sync-storage";
+import React, { useCallback } from "react";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import AlertSystem from "../function/Alert";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Separator = () => <View style={oStyles.separator} />;
 
@@ -9,31 +9,38 @@ const Settings = () => {
 	let sTokenSettings, nPortSettings, nIpSettings;
 	let sTypeErreur, sMessageErreur, sBoutonErreur;
 
+	const vSaveItem = useCallback(async (vStorageKey, vValue) => {
+		try {
+			await AsyncStorage.setItem(vStorageKey, vValue);
+		} catch (vError) {
+			console.warn(vError);
+		}
+	});
+
 	function vSubmit(vStorageKey, vValue) {
 		if (vValue) {
 			switch (vStorageKey) {
 				case "token":
-					SyncStorage.set(vStorageKey, vValue);
+					vSaveItem(vStorageKey, vValue);
 
 					sTypeErreur = "Succès";
 					sMessageErreur = "Le token à bien été mis à jour";
 					sBoutonErreur = "OK";
-					AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);
 
+					AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);
 					break;
 				case "ip":
 					const sValidIp =
 						/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 					if (sValidIp.test(vValue) == true) {
-						SyncStorage.set(vStorageKey, vValue);
+						vSaveItem(vStorageKey, vValue);
 
 						sTypeErreur = "Succès";
 						sMessageErreur = "L'IP à bien été mis à jour";
 						sBoutonErreur = "OK";
-						
-						AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);
 
+						AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);
 					} else {
 						sTypeErreur = "Erreur";
 						sMessageErreur = "Veuillez renseigner un IP valide";
@@ -44,7 +51,7 @@ const Settings = () => {
 					break;
 				case "port":
 					if (vValue >= 1 && vValue <= 65535) {
-						SyncStorage.set(vStorageKey, Number(vValue));
+						vSaveItem(vStorageKey, vValue);
 
 						sTypeErreur = "Succès";
 						sMessageErreur = "Le port à bien été mis à jour";
@@ -53,7 +60,8 @@ const Settings = () => {
 						AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);
 					} else {
 						sTypeErreur = "Erreur";
-						sMessageErreur = "Veuillez renseigner un Port entre 1 et 65535";
+						sMessageErreur =
+							"Veuillez renseigner un Port entre 1 et 65535";
 						sBoutonErreur = "OK";
 
 						AlertSystem(sTypeErreur, sMessageErreur, sBoutonErreur);

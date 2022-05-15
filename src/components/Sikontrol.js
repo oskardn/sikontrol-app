@@ -1,23 +1,19 @@
 import React from "react";
-import {
-	Button,
-	StyleSheet,
-	useColorScheme,
-	View,
-} from "react-native";
+import { Button, StyleSheet, useColorScheme, View } from "react-native";
+
+import io from "socket.io-client";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectDropdown from "react-native-select-dropdown";
 import Slider from "@react-native-community/slider";
-import io from "socket.io-client";
 
 const Separator = () => <View style={oStyles.separator} />;
 
-const Sikontrol = ({ navigation }) => {
+const Sikontrol = ({ route, navigation }) => {
 	const isDarkMode = useColorScheme() === "dark";
 
-	let nIp = "",
-		nPort,
-		sToken;
+	let nIp = route.params.nIp,
+		nPort = Number(route.params.nPort),
+		sToken = route.params.sToken;
 
 	const sUrl = `ws://${nIp}:${nPort}`;
 

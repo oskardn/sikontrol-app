@@ -1,22 +1,23 @@
 import React from "react";
-import type { Node } from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Sikontrol from "./src/components/Sikontrol";
+import Home from "./src/components/Home";
 import Settings from "./src/components/Settings";
+import Sikontrol from "./src/components/Sikontrol";
 
 const Stack = createNativeStackNavigator();
 
-const App: () => Node = () => {
+const App = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
 				<Stack.Screen
-					name="Sikontrol"
-					component={Sikontrol}
+					name="Home"
+					component={Home}
 					options={{
-						title: "Sikontrol",
+						title: "Home",
 						headerStyle: {
 							backgroundColor: "#2e6abb",
 						},
@@ -39,6 +40,20 @@ const App: () => Node = () => {
 							fontWeight: "bold",
 						},
 					})}
+				/>
+				<Stack.Screen
+					name="Sikontrol"
+					component={Sikontrol}
+					options={{
+						title: "Sikontrol",
+						headerStyle: {
+							backgroundColor: "#2e6abb",
+						},
+						headerTintColor: "#fff",
+						headerTitleStyle: {
+							fontWeight: "bold",
+						},
+					}}
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
