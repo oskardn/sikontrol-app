@@ -87,7 +87,7 @@ const Settings = () => {
 					secureTextEntry={true}
 					placeholder="Token"
 					onChangeText={(sValue) => (sTokenSettings = sValue)}
-					style={oStyles.dropdownBtnStyle}
+					style={oStyles.inputText}
 				/>
 				<Separator />
 				<Button
@@ -107,7 +107,7 @@ const Settings = () => {
 					secureTextEntry={false}
 					placeholder="IP"
 					onChangeText={(nValue) => (nIpSettings = nValue)}
-					style={oStyles.dropdownBtnStyle}
+					style={oStyles.inputText}
 				/>
 				<Separator />
 				<Button
@@ -127,7 +127,7 @@ const Settings = () => {
 					secureTextEntry={false}
 					placeholder="Port"
 					onChangeText={(nValue) => (nPortSettings = nValue)}
-					style={oStyles.dropdownBtnStyle}
+					style={oStyles.inputText}
 				/>
 				<Separator />
 				<Button
@@ -154,5 +154,14 @@ const oStyles = StyleSheet.create({
 		marginVertical: 8,
 		borderBottomColor: "transparent",
 		borderBottomWidth: StyleSheet.hairlineWidth,
+	},
+
+	inputText: {
+		width: "80%",
+		height: 50,
+		backgroundColor: "#FFF",
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: "#444",
 	},
 });
