@@ -86,6 +86,7 @@ const Settings = () => {
 				<TextInput
 					secureTextEntry={true}
 					placeholder="Token"
+					placeholderTextColor="#222"
 					onChangeText={(sValue) => (sTokenSettings = sValue)}
 					style={oStyles.inputText}
 				/>
@@ -106,6 +107,7 @@ const Settings = () => {
 					keyboardType="number-pad"
 					secureTextEntry={false}
 					placeholder="IP"
+					placeholderTextColor="#222"
 					onChangeText={(nValue) => (nIpSettings = nValue)}
 					style={oStyles.inputText}
 				/>
@@ -126,6 +128,7 @@ const Settings = () => {
 					keyboardType="number-pad"
 					secureTextEntry={false}
 					placeholder="Port"
+					placeholderTextColor="#222"
 					onChangeText={(nValue) => (nPortSettings = nValue)}
 					style={oStyles.inputText}
 				/>
@@ -162,6 +165,8 @@ const oStyles = StyleSheet.create({
 		backgroundColor: "#FFF",
 		borderRadius: 8,
 		borderWidth: 1,
-		borderColor: "#444",
+		borderColor: "#222",
+		textAlign: 'center',
+		color: '#222'
 	},
 });

@@ -64,7 +64,10 @@ const Home = ({ navigation }) => {
 			<Separator />
 
 			<View style={{ width: "33%" }}>
-				<Button title="Connexion" onPress={vConnection} />
+				<Button
+					title="Connexion"
+					onPress={vConnection}
+					color={"#2e6abb"} />
 			</View>
 
 			<Separator />
@@ -75,6 +78,7 @@ const Home = ({ navigation }) => {
 					onPress={() => {
 						navigation.navigate("Settings");
 					}}
+					color={"#2e6abb"}
 				/>
 			</View>
 		</View>
