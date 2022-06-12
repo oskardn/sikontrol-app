@@ -1,9 +1,21 @@
 import React, { useCallback } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Appearance, Button, StyleSheet, TextInput, View } from "react-native";
 import AlertSystem from "../function/Alert";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const Separator = () => <View style={oStyles.separator} />;
+
+const colorScheme = Appearance.getColorScheme();
+
+let vDefaultBackgroundColor = "#fff";
+let vDefaultPlaceholderTextColor = "#222";
+let vDefaultInputBackgroundColor = "#fff";
+
+if (colorScheme === "dark") {
+	vDefaultBackgroundColor = "#222";
+	vDefaultPlaceholderTextColor = "#fff";
+	vDefaultInputBackgroundColor = "#222";
+}
 
 const Settings = () => {
 	let sTokenSettings, nPortSettings, nIpSettings;
@@ -81,12 +93,12 @@ const Settings = () => {
 	}
 
 	return (
-		<View style={[oStyles.container, { flexDirection: "column" }]}>
+		<View style={[oStyles.container, { flexDirection: "column", flex: 1, backgroundColor: vDefaultBackgroundColor }]}>
 			<View style={{ alignItems: "center" }}>
 				<TextInput
 					secureTextEntry={true}
 					placeholder="Token"
-					placeholderTextColor="#222"
+					placeholderTextColor={vDefaultPlaceholderTextColor}
 					onChangeText={(sValue) => (sTokenSettings = sValue)}
 					style={oStyles.inputText}
 				/>
@@ -107,7 +119,7 @@ const Settings = () => {
 					keyboardType="number-pad"
 					secureTextEntry={false}
 					placeholder="IP"
-					placeholderTextColor="#222"
+					placeholderTextColor={vDefaultPlaceholderTextColor}
 					onChangeText={(nValue) => (nIpSettings = nValue)}
 					style={oStyles.inputText}
 				/>
@@ -128,7 +140,7 @@ const Settings = () => {
 					keyboardType="number-pad"
 					secureTextEntry={false}
 					placeholder="Port"
-					placeholderTextColor="#222"
+					placeholderTextColor={vDefaultPlaceholderTextColor}
 					onChangeText={(nValue) => (nPortSettings = nValue)}
 					style={oStyles.inputText}
 				/>
@@ -162,10 +174,10 @@ const oStyles = StyleSheet.create({
 	inputText: {
 		width: "80%",
 		height: 50,
-		backgroundColor: "#FFF",
+		backgroundColor: vDefaultInputBackgroundColor,
 		borderRadius: 8,
 		borderWidth: 1,
-		borderColor: "#222",
+		borderColor: vDefaultPlaceholderTextColor,
 		textAlign: 'center',
 		color: '#222'
 	},

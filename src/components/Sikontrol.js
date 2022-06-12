@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, useColorScheme, View } from "react-native";
+import { Appearance, Button, StyleSheet, useColorScheme, View } from "react-native";
 
 import io from "socket.io-client";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -8,9 +8,21 @@ import Slider from "@react-native-community/slider";
 
 const Separator = () => <View style={oStyles.separator} />;
 
-const Sikontrol = ({ route, navigation }) => {
-	const isDarkMode = useColorScheme() === "dark";
+const colorScheme = Appearance.getColorScheme();
 
+let vDefaultBackgroundColor = "#fff";
+let vDefaultSliderBackgroundColor = "#222";
+let vDefaultSelectTextColor = "#222";
+let vDefaultSelectBackgroundColor = "#fff";
+
+if (colorScheme === 'dark') {
+	vDefaultBackgroundColor = "#222";
+	vDefaultSliderBackgroundColor = "#fff";
+	vDefaultSelectTextColor = "#fff";
+	vDefaultSelectBackgroundColor = "#222";
+}
+
+const Sikontrol = ({ route, navigation }) => {
 	let nIp = route.params.nIp,
 		nPort = Number(route.params.nPort),
 		sToken = route.params.sToken;
@@ -32,13 +44,15 @@ const Sikontrol = ({ route, navigation }) => {
 	ioSocket.once("aSessions", (aSessions) => {
 		aSessions.forEach((sValue) => {
 			if (sValue.name && sValue.pid) {
-				aApp.push(sValue.name);
+				if (aApp.includes(sValue.name) !== true) {
+					aApp.push(sValue.name);
+				}
 			}
 		});
 	});
 
 	return (
-		<View style={[oStyles.container, { flexDirection: "column" }]}>
+		<View style={[oStyles.container, { flexDirection: "column", flex: 1, backgroundColor: vDefaultBackgroundColor }]}>
 			<View style={[oStyles.center, { flexDirection: "row" }]}>
 				<View style={{ width: "33%" }}>
 					<Button
@@ -86,7 +100,7 @@ const Sikontrol = ({ route, navigation }) => {
 						maximumValue={1}
 						step={0.01}
 						value={1}
-						minimumTrackTintColor="#222"
+						minimumTrackTintColor={vDefaultSliderBackgroundColor}
 						maximumTrackTintColor="#000000"
 						onValueChange={(value) =>
 							ioSocket.emit("ioVolumeMaster", {
@@ -131,7 +145,7 @@ const Sikontrol = ({ route, navigation }) => {
 						return (
 							<FontAwesome
 								name={isOpened ? "chevron-up" : "chevron-down"}
-								color={"#444"}
+								color={vDefaultSelectTextColor}
 								size={18}
 							/>
 						);
@@ -152,7 +166,7 @@ const Sikontrol = ({ route, navigation }) => {
 						maximumValue={1}
 						step={0.01}
 						value={1}
-						minimumTrackTintColor="#222"
+						minimumTrackTintColor={vDefaultSliderBackgroundColor}
 						maximumTrackTintColor="#000000"
 						onValueChange={(value) =>
 							ioSocket.emit("ioVolumeApps", {
@@ -200,28 +214,31 @@ const oStyles = StyleSheet.create({
 	dropdownBtnStyle: {
 		width: "80%",
 		height: 50,
-		backgroundColor: "#FFF",
+		backgroundColor: vDefaultSelectBackgroundColor,
 		borderRadius: 8,
 		borderWidth: 1,
-		borderColor: "#444",
+		borderColor: vDefaultSelectTextColor,
 	},
 
 	dropdownBtnTxtStyle: {
-		color: "#222",
+		color: vDefaultSelectTextColor,
 		textAlign: "left",
 	},
 
 	dropdownDropdownStyle: {
-		backgroundColor: "#fff",
+		backgroundColor: vDefaultSelectBackgroundColor,
+		borderRadius: 8,
+		borderWidth: 1,
+		borderColor: vDefaultSelectTextColor,
 	},
 
 	dropdownRowStyle: {
-		backgroundColor: "#fff",
-		borderBottomColor: "#222",
+		backgroundColor: vDefaultSelectBackgroundColor,
+		borderBottomColor: "#000",
 	},
 
 	dropdownRowTxtStyle: {
-		color: "#222",
+		color: vDefaultSelectTextColor,
 		textAlign: "center",
 	},
 });
