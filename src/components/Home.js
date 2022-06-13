@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { Appearance, Button, Image, StyleSheet, Text, View } from "react-native";
+import Zeroconf from "react-native-zeroconf";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -18,6 +19,8 @@ if (colorScheme === 'dark') {
 }
 
 const Home = ({ navigation }) => {
+	const zeroconf = new Zeroconf();
+
 	let sTypeErreur, sMessageErreur, sBoutonErreur;
 
 	const vConnection = useCallback(async () => {

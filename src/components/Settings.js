@@ -179,6 +179,6 @@ const oStyles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: vDefaultPlaceholderTextColor,
 		textAlign: 'center',
-		color: '#222'
+		color: vDefaultPlaceholderTextColor
 	},
 });
