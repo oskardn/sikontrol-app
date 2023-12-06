@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Appearance, Button, Image, StyleSheet, Text, View } from "react-native";
+import Zeroconf from "react-native-zeroconf";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -7,7 +8,19 @@ import AlertSystem from "../function/Alert";
 
 const Separator = () => <View style={oStyles.separator} />;
 
+const colorScheme = Appearance.getColorScheme();
+
+let vDefaultBackgroundColor = "#fff";
+let sAppNameColor = "#222";
+
+if (colorScheme === 'dark') {
+	vDefaultBackgroundColor = "#222";
+	sAppNameColor = "#fff";
+}
+
 const Home = ({ navigation }) => {
+	const zeroconf = new Zeroconf();
+
 	let sTypeErreur, sMessageErreur, sBoutonErreur;
 
 	const vConnection = useCallback(async () => {
@@ -52,19 +65,22 @@ const Home = ({ navigation }) => {
 	}, []);
 
 	return (
-		<View style={{ alignItems: "center" }}>
+		<View style={{ alignItems: "center", flex: 1, backgroundColor: vDefaultBackgroundColor }}>
 			<Separator />
 
 			<Image source={require("../img/logo.png")} />
 
 			<Separator />
 
-			<Text>Sikontrol</Text>
+			<Text style={{ color: sAppNameColor }}>Sikontrol</Text>
 
 			<Separator />
 
 			<View style={{ width: "33%" }}>
-				<Button title="Connexion" onPress={vConnection} />
+				<Button
+					title="Connexion"
+					onPress={vConnection}
+					color={"#2e6abb"} />
 			</View>
 
 			<Separator />
@@ -75,6 +91,7 @@ const Home = ({ navigation }) => {
 					onPress={() => {
 						navigation.navigate("Settings");
 					}}
+					color={"#2e6abb"}
 				/>
 			</View>
 		</View>

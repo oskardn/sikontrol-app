@@ -1,4 +1,4 @@
-package com.sikontrol.newarchitecture;
+package fr.sikontrol.app.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.sikontrol.BuildConfig;
-import com.sikontrol.newarchitecture.components.MainComponentsRegistry;
-import com.sikontrol.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import fr.sikontrol.app.BuildConfig;
+import fr.sikontrol.app.newarchitecture.components.MainComponentsRegistry;
+import fr.sikontrol.app.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
